@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QuizScore</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.12.23/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script>
+      let teams = [];
+      let nbTeams = 0;
+
+      function addTeam() {
+        const teamName = document.getElementById("teamName").value;
+        if (teamName) {
+          teams.push({ name: teamName, score: 0 });
+          updateTeamsList();
+          document.getElementById("teamName").value = ""; // Reset input
+          closePanel();
+        }
+      }
+
+      function add1toTeam(index) {
+        teams[index].score++;
+        updateTeamsList();
+      }
+
+      function sub1toTeam(index) {
+        teams[index].score--;
+        updateTeamsList();
+      }
+
+      function deleteTeam(index) {
+        teams.splice(index, 1);
+        updateTeamsList();
+      }
+
+      function updateTeamsList() {
+        nbTeams = teams.length;
+        document.getElementById("teamCount").innerText = nbTeams;
+        const teamListDiv = document.getElementById("teamList");
+        teamListDiv.innerHTML = ""; // Clear the list before updating
+        teams.forEach((team, index) => {
+          const teamCard = document.createElement("div");
+          teamCard.classList.add(
+            "card",
+            "bg-gray-800",
+            "shadow-md",
+            "rounded-lg",
+            "mb-4"
+          );
+          teamCard.innerHTML = `
+                    <div class="card-body" style="padding: 1rem">
+                        <h3 class="card-title text-lg font-semibold">Équipe de ${team.name}</h3>
+                        <strong class="text-gray-100">Score : ${team.score}</strong>
+                        <div class="flex items-center gap-2 mt-2">
+                            <button class="btn btn-primary" onclick="sub1toTeam(${index})">
+                                <i class="fa-solid fa-subtract"></i>
+                            </button>
+                            <button class="btn btn-primary" onclick="add1toTeam(${index})">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                            <button class="btn btn-error float-right" onclick="deleteTeam(${index})">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+          teamListDiv.appendChild(teamCard);
+        });
+      }
+
+      function openPanel() {
+        document.getElementById("overlay").style.display = "flex";
+      }
+
+      function closePanel() {
+        document.getElementById("overlay").style.display = "none";
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        document
+          .getElementById("addTeamBtn")
+          .addEventListener("click", openPanel);
+      });
+    </script>
+  </head>
+
+  <body>
+    <div class="container mx-auto p-4">
+      <h1 class="text-2xl font-bold mb-4">Gestion des équipes</h1>
+      <p class="mb-4">Nombre d'équipes : <strong id="teamCount">0</strong></p>
+
+      <button id="addTeamBtn" class="btn btn-primary mb-4">
+        <i class="fa-solid fa-plus"></i> Ajouter une équipe
+      </button>
+
+      <div
+        id="teamList"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+      ></div>
+    </div>
+
+    <div class="overlay" id="overlay">
+      <div class="card teamcard w-96 shadow-xl">
+        <div class="card-body">
+          <h2 class="card-title text-xl font-bold">Ajouter une équipe</h2>
+          <input
+            type="text"
+            id="teamName"
+            class="input input-bordered w-full"
+            placeholder="Nom de l'équipe"
+            required
+          />
+          <button class="btn mt-4 w-full" onclick="addTeam()">
+            <i class="fa-solid fa-plus"></i> Ajouter
+          </button>
+          <button
+            type="button"
+            class="btn btn-outline mt-4 w-full"
+            onclick="closePanel()"
+          >
+            <i class="fa-solid fa-xmark"></i> Annuler
+          </button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #020a13;
+  color: #f0f7ff;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.99); /* Assombrissement */
+  display: none; /* Caché par défaut */
+  justify-content: center;
+  align-items: center;
+  z-index: 1; /* S'affiche au-dessus de tout */
+}
+
+.overlay.active {
+  display: flex; /* Montre l'overlay quand il est actif */
+}
+
+.addTeamPanel {
+  z-index: 2; /* S'assure que le panel est au-dessus de l'overlay */
+  display: flex;
+  flex-direction: column;
+}
+
+.teamcard {
+  background-color: #0c3d6ea3;
+  margin: 10px;
+}
+
+.container {
+  max-width: 475px;
+  margin: 0 auto;
+  text-align: center;
+}
